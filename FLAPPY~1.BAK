@@ -1,0 +1,65 @@
+#include <graphics.h>
+#include <conio.h>
+#include <stdlib.h>
+#include <dos.h>
+
+void main() {
+    int gd = DETECT, gm;
+    int birdY = 200, birdX = 100;
+    int pipeX = 500, gapY = 150, gapSize = 100;
+    int velocity = 0, gravity = 1;
+    char key;
+
+    initgraph(&gd, &gm, "C:\\TURBOC3\\BGI");
+
+    while (1) {
+        cleardevice();
+
+        // Draw Bird
+        setcolor(YELLOW);
+        circle(birdX, birdY, 12);
+
+        // Draw Pipes (Top and Bottom)
+        setcolor(GREEN);
+        rectangle(pipeX, 0, pipeX + 50, gapY);
+        rectangle(pipeX, gapY + gapSize, pipeX + 50, 480);
+
+        // Physics
+        velocity += gravity;
+        birdY += velocity;
+
+        // Move Pipe
+        pipeX -= 6;
+        if (pipeX < -50) {
+            pipeX = 600;
+            gapY = 50 + rand() % 250;
+        }
+
+        // Collision with Pipe
+        if (pipeX <= birdX + 12 && pipeX + 50 >= birdX - 12) {
+            if (birdY - 12 <= gapY || birdY + 12 >= gapY + gapSize) {
+                outtextxy(270, 240, "GAME OVER!");
+                getch();
+                break;
+            }
+        }
+
+        // Collision with Floor/Ceiling
+        if (birdY >= 470 || birdY <= 10) {
+            outtextxy(270, 240, "GAME OVER!");
+            getch();
+            break;
+        }
+
+        // Key Press
+        if (kbhit()) {
+            key = getch();
+            if (key == ' ' || key == 72) velocity = -7; // Space or Up Arrow to Jump
+            if (key == 27) break;                        // ESC
+        }
+
+        delay(35);
+    }
+
+    closegraph();
+}

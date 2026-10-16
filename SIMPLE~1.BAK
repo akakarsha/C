@@ -1,0 +1,56 @@
+#include <graphics.h>
+#include <conio.h>
+#include <stdio.h>
+#include <dos.h>
+int main() {
+    int gdriver = DETECT, gmode, errorcode;
+    int x, y, r;
+
+    /* Initialize graphics mode. Update the path if yours is different */
+    initgraph(&gdriver, &gmode, "C:\\TurboC3\\BGI");
+
+    /* Check for initialization errors */
+    errorcode = graphresult();
+    if (errorcode != grOk) {
+	printf("Graphics error: %s\n", grapherrormsg(errorcode));
+	printf("Press any key to halt...");
+	getch();
+	return 1;
+    }
+
+    /* Get mid-coordinates of the screen */
+    x = getmaxx() / 2;
+    y = getmaxy() / 2;
+
+    /* Drawing animated circles */
+    setcolor(WHITE);
+    outtextxy(x - 70, y - 120, "Turbo C Graphics OK!");
+
+    for (r = 10; r <= 100; r += 10) {
+	setcolor(r / 10); /* Cycle colors */
+	circle(x, y, r);
+	delay(1500); /* Pause for effect (milliseconds) */
+    for (r = 10; r <= 100; r += 10) {
+	setcolor(r / 10); /* Cycle colors */
+	circle(x, y, r);
+	delay(1500); /* Pause for effect (milliseconds) */
+	for (r = 10; r <= 100; r += 10) {
+   setcolor(r / 10); /* Cycle colors */
+	circle(y, r, x);
+    delay(500); /* Pause for effect (milliseconds) */
+   }
+
+    }
+
+    }
+
+   for (r = 10; r <= 100; r += 10) {
+   setcolor(r / 10); /* Cycle colors */
+	circle(y, r, x);
+    delay(500); /* Pause for effect (milliseconds) */
+   }
+
+    getch();        /* Wait for key press */
+    closegraph();   /* Shut down graphics mode */
+    return 0;
+}

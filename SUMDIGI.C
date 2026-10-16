@@ -1,0 +1,41 @@
+/*#include<stdio.h>
+#include<conio.h>
+main()
+{
+    int n, sum = 1;
+    printf("enter the number");
+    scanf("%d", &n)
+
+    sum =sum + n;
+    printf("%d\n", sum);
+    //sum += n;   // extract + add,  the loop header
+   // printf("%d\n", sum);
+   // clrscr();
+return 0;
+    }
+*/
+
+/*#include <stdio.h>
+int main() {
+    int num, digit, sum = 0;
+    printf("Enter a number: ");
+    scanf("%d", &num);
+
+    while (num != 0) {              // continue till no digits are left
+	digit = num % 10;           // extract the last digit
+	sum = sum + digit;          // add it to the total
+	num = num / 10;             // drop the last digit
+    }
+    printf("Sum of digits = %d\n", sum);
+    return 0;
+	}
+
+/*
+#include <stdio.h>
+int main(){
+    int n, sum = 0;
+    scanf("%d", &n);
+    for (; n != 0; n /= 10) sum += n % 10;   // extract + add, all in the loop header
+    printf("%d\n", sum);
+    return 0;
+} */

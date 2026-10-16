@@ -1,0 +1,67 @@
+ccccccccccr
+#include <graphics.h>
+#include <conio.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <dos.h>
+
+void main() {
+    int gd = DETECT, gm;
+    int basketX = 280, basketW = 70;
+    int itemX = 100 + rand() % 440, itemY = 0;
+    int score = 0, missed = 0;
+    char scoreStr[30];
+
+    initgraph(&gd, &gm, "C:\\TURBOC3\\BGI");
+
+    while (1) {
+        cleardevice();
+
+        // Draw Score and Misses
+        sprintf(scoreStr, "Score: %d  Missed: %d/3", score, missed);
+        outtextxy(10, 10, scoreStr);
+
+        // Draw Basket
+        setcolor(WHITE);
+        rectangle(basketX, 420, basketX + basketW, 440);
+
+        // Draw Falling Apple
+        setcolor(RED);
+        circle(itemX, itemY, 10);
+
+        // Move Apple
+        itemY += 7;
+
+        // Check Catch
+        if (itemY >= 420 && itemX >= basketX && itemX <= basketX + basketW) {
+            score += 10;
+            itemY = 0;
+            itemX = 50 + rand() % 540;
+        }
+
+        // Missed Apple
+        if (itemY > 460) {
+            missed++;
+            itemY = 0;
+            itemX = 50 + rand() % 540;
+
+            if (missed >= 3) {
+                outtextxy(260, 240, "TOO MANY MISSES! GAME OVER");
+                getch();
+                break;
+            }
+        }
+
+        // Basket Controls
+        if (kbhit()) {
+            char key = getch();
+            if (key == 75 && basketX > 10) basketX -= 25;       // Left Arrow
+            if (key == 77 && basketX < 560) basketX += 25;      // Right Arrow
+            if (key == 27) break;                              // ESC
+        }
+
+        delay(30);
+    }
+
+    closegraph();
+}

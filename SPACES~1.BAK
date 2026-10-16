@@ -1,0 +1,62 @@
+#include <graphics.h>
+#include <conio.h>
+#include <stdlib.h>
+#include <dos.h>
+
+void main() {
+    int gd = DETECT, gm;
+    int shipX = 300, shipY = 400;
+    int obsX = 100 + rand() % 400, obsY = 0;
+    int score = 0;
+    char key;
+
+    initgraph(&gd, &gm, "C:\\TURBOC3\\BGI");
+
+    while (1) {
+        cleardevice();
+
+        // Display Score
+        setcolor(WHITE);
+        outtextxy(10, 10, "SPACE DEFENDER");
+
+        // Draw Spaceship (Triangle)
+        setcolor(CYAN);
+        line(shipX, shipY, shipX - 15, shipY + 30);
+        line(shipX, shipY, shipX + 15, shipY + 30);
+        line(shipX - 15, shipY + 30, shipX + 15, shipY + 30);
+
+        // Draw Asteroid / Obstacle
+        setcolor(RED);
+        circle(obsX, obsY, 15);
+        floodfill(obsX, obsY, RED);
+
+        // Move Obstacle
+        obsY += 8;
+
+        // Reset Obstacle when reaching bottom
+        if (obsY > 480) {
+            obsY = 0;
+            obsX = 50 + rand() % 540;
+            score += 10;
+        }
+
+        // Collision Check
+        if (obsY >= shipY && obsY <= shipY + 30 && obsX >= shipX - 15 && obsX <= shipX + 15) {
+            outtextxy(280, 240, "CRASHED! GAME OVER!");
+            getch();
+            break;
+        }
+
+        // User Controls
+        if (kbhit()) {
+            key = getch();
+            if (key == 75 && shipX > 20) shipX -= 20;   // Left Arrow
+            if (key == 77 && shipX < 620) shipX += 20;  // Right Arrow
+            if (key == 27) break;                       // ESC
+        }
+
+	delay(10);
+    }
+
+    closegraph();
+}
